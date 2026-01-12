@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim AS upgraded
 RUN apt-get update \
- && apt-get upgrade \
+ && apt-get upgrade -y \
  && rm -rf /var/lib/apt/lists/
 
 FROM upgraded AS builder
