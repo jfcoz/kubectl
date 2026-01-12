@@ -9,7 +9,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/
 ARG KUBECTL_VERSION
 ARG TARGETARCH
-RUN curl -L "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" -o /usr/bin/kubectl \
+RUN curl -L "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" -o /usr/bin/kubectl \
  && chmod +x /usr/bin/kubectl \
  && kubectl version --client
 

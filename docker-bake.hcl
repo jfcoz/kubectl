@@ -1,10 +1,13 @@
-variable "REPO" {
-  default = "jfcoz/kubectl"
+variable "REGISTRY" {
+  default = "jfcoz"
 }
 
 function "tag" {
   params = [tgt, version]
-  result = ["${REPO}:${tgt}-${replace(version, ".", "-")}"]
+  result = [
+    "${REGISTRY}/kubectl-${tgt}:${version}",
+    "${REGISTRY}/kubectl-${tgt}:v${version}"
+  ]
 }
 
 target "default" {
@@ -15,12 +18,12 @@ target "default" {
   matrix = {
     tgt = ["basic", "jq"]
     version = [
-      "v1.30.0",
-      "v1.31.0",
-#      "v1.32.0",
-#      "v1.33.0",
-#      "v1.34.0",
-#      "v1.35.0"
+      "1.30.0",
+      "1.31.0",
+#      "1.32.0",
+#      "1.33.0",
+#      "1.34.0",
+#      "1.35.0"
     ]
   }
   args = {
