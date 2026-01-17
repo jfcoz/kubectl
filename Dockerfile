@@ -1,13 +1,4 @@
-FROM debian:bookworm-slim AS upgraded
-RUN apt-get update \
- && apt-get upgrade -y \
- && rm -rf /var/lib/apt/lists/
-
-FROM debian:bookworm-slim AS securityupgraded
-RUN grep security /etc/apt/sources.list | tee /etc/apt/security.sources.list \
- && apt-get update \
- && apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/security.sources.list \
- && rm -rf /var/lib/apt/lists/
+FROM jfcoz/debian-upgraded:12-slim AS securityupgraded
 
 FROM securityupgraded AS kubectlrepo
 RUN apt-get update \
@@ -32,10 +23,10 @@ RUN curl -L "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${TARGETARC
  && chmod +x /usr/bin/kubectl \
  && kubectl version --client
 
-FROM upgraded AS basic
+FROM securityupgraded AS basic
 COPY --from=builder /usr/bin/kubectl /usr/bin/kubectl
 
-FROM upgraded AS jq
+FROM securityupgraded AS jq
 RUN apt-get update \
  && apt-get install -y jq \
  && rm -rf /var/lib/apt/lists/
