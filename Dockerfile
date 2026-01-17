@@ -1,4 +1,4 @@
-FROM jfcoz/debian-upgraded:12-slim AS securityupgraded
+FROM jfcoz/debian-upgraded:13-slim AS securityupgraded
 
 FROM securityupgraded AS kubectlrepo
 RUN apt-get update \
