@@ -3,7 +3,13 @@ RUN apt-get update \
  && apt-get upgrade -y \
  && rm -rf /var/lib/apt/lists/
 
-FROM upgraded AS kubectlrepo
+FROM debian:bookworm-slim AS securityupgraded
+RUN grep security /etc/apt/sources.list | tee /etc/apt/security.sources.list \
+ && apt-get update \
+ && apt-get upgrade -y -o Dir::Etc::SourceList=/etc/apt/security.sources.list \
+ && rm -rf /var/lib/apt/lists/
+
+FROM securityupgraded AS kubectlrepo
 RUN apt-get update \
  && apt-get install -y \
       apt-transport-https \
@@ -16,7 +22,7 @@ RUN echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://p
  && chmod 644 /etc/apt/sources.list.d/kubernetes.list
 ADD --chmod=644 kubernetes-apt-keyring.gpg /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
-FROM upgraded AS builder
+FROM securityupgraded AS builder
 RUN apt-get update \
  && apt-get install -y curl ca-certificates \
  && rm -rf /var/lib/apt/lists/
