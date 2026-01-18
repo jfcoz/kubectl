@@ -5,14 +5,14 @@ variable "REGISTRY" {
 function "tag" {
   params = [tgt, version]
   result = [
-    "${REGISTRY}/kubectl-${tgt}:${version}",
-    "${REGISTRY}/kubectl-${tgt}:v${version}"
+    "${REGISTRY}/kubectl-${replace(tgt,"_","-")}:${version}",
+    "${REGISTRY}/kubectl-${replace(tgt,"_","-")}:v${version}"
   ]
 }
 
 target "default" {
   context = "."
-  name = "kubectl-${tgt}-${replace(version, ".", "-")}"
+  name = "kubectl-${replace(tgt,"_","-")}-${replace(version, ".", "-")}"
   dockerfile = "Dockerfile"
   tags = tag(tgt,version)
   matrix = {
