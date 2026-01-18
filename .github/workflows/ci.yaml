@@ -31,13 +31,17 @@ jobs:
       #matrix:
       #  include: ${{ fromJson(needs.prepare.outputs.matrix) }}
       matrix:
-        version:
+        kubectl_version:
         - "1-30"
         - "1-31"
         - "1-32"
         - "1-33"
         - "1-34"
         - "1-35"
+        debian_version:
+        - "11"
+        - "12"
+        - "13"
     steps:
       -
         name: Check out repository code
@@ -58,7 +62,7 @@ jobs:
         uses: docker/bake-action@v6
         with:
           push: true
-          targets: "*-${{ matrix.version }}-*"
+          targets: "kubectl-deb${{ matrix.debian_version }}-*-${{ matrix.kubectl_version }}-*"
           #targets: ${{ matrix.target }}
         #  set: |
         #    *.tags=user/app:latest

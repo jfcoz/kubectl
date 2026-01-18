@@ -1,4 +1,5 @@
-FROM jfcoz/debian-upgraded:12-slim AS securityupgraded
+ARG DEBIAN_VERSION
+FROM jfcoz/debian-upgraded:${DEBIAN_VERSION}-slim AS securityupgraded
 
 FROM securityupgraded AS builder
 RUN apt-get update \
