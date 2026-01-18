@@ -1,4 +1,4 @@
-ARG DEBIAN_VERSION
+ARG DEBIAN_VERSION=latest
 FROM jfcoz/debian-upgraded:${DEBIAN_VERSION}-slim AS securityupgraded
 
 FROM securityupgraded AS builder
